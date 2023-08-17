@@ -1,13 +1,15 @@
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState, Suspense, useContext } from "react";
 import axios from "../../utils/axiosInstance.js";
 import Loading from "../../components/Loading/Loading.jsx";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { BsSearch } from "react-icons/bs";
+import { AuthContext } from "../../Context/index.jsx";
 
 const LazyBlog = React.lazy(() => import("../Blog/Blog.jsx"));
 
 const Blogs = () => {
+  const { state } = useContext(AuthContext);
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -53,7 +55,11 @@ const Blogs = () => {
 
     if (result.isConfirmed) {
       try {
-        await axios.delete(`blog/post/${id}`);
+        await axios.delete(`blog/post/${id}`, {
+          headers: {
+            Authorization: `Bearer ${state?.token}`,
+          }
+        });
         toast.success("Blog deleted successfully");
         fetchBlogs(searchKeyword);
       } catch (error) {

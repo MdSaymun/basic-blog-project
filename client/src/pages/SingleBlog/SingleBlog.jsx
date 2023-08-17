@@ -124,7 +124,7 @@ const SingleBlog = () => {
                   maxLength={200}
                 />
                 <button
-                  className="btn btn-success rounded-pill btn-sm mt-2"
+                  className="btn btn-primary rounded-pill btn-sm mt-2"
                   onClick={handleAddComment}
                   disabled={!commentText}
                 >

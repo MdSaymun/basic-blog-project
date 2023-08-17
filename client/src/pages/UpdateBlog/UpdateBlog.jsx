@@ -1,14 +1,17 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import axios from "../../utils/axiosInstance.js";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading/Loading.jsx";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../Context/index.jsx";
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("Authorization")}`;
 
 const UpdateBlog = () => {
+  const { state } = useContext(AuthContext);
+
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
@@ -45,7 +48,11 @@ const UpdateBlog = () => {
       setUpdating(true);
       toast.info("Updating blog..."); // Show loading toast
 
-      await axios.put(`blog/edit/${id}`, data);
+      await axios.put(`blog/edit/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${state?.token}`,
+        },
+      });
       toast.dismiss();
       toast.success("Blog updated successfully", { autoClose: 3000 });
     } catch (error) {
@@ -105,7 +112,7 @@ const UpdateBlog = () => {
             Back to Blog
           </Link>
 
-          <button type="submit" className="btn btn-success px-5 fw-semibold rounded-pill" disabled={updating}>
+          <button type="submit" className="btn btn-primary px-5 fw-semibold rounded-pill" disabled={updating}>
             {updating ? "Updating..." : "Save and publish"}
           </button>
         </form>

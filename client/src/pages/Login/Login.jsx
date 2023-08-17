@@ -22,8 +22,8 @@ const Login = () => {
     try {
       const response = await axios.post("user/login", data);
 
-      if (response?.data?.error) {
-        toast.error(response?.data?.error);
+      if (response?.data?.error || response?.data?.message) {
+        toast.error(response?.data?.message || response?.data?.error || "Login failed!");
       }
       if (response?.data?.token) {
         toast.success("Welcome back");
