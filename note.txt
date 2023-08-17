@@ -1,0 +1,4 @@
+Frontend URL: https://basic-blog-project.vercel.app
+API URL: https://blog-project-api.vercel.app
+
+Github Repo: https://github.com/MdSaymun/basic-blog-project

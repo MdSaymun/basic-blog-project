@@ -81,7 +81,7 @@ const Registration = () => {
 
         <button
           type="submit"
-          className="btn btn-success px-5 fw-semibold rounded-pill"
+          className="btn btn-primary px-5 fw-semibold rounded-pill"
           disabled={loading}
         >
           {loading ? "Registering..." : "Register"}
