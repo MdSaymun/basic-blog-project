@@ -5,10 +5,10 @@ const app = express();
 // Security Middleware
 const cors = require("cors");
 
-const { notFoundHandler, errorHandler } = require("./app/middlewares/errorHandlers");
-const blog = require("./app/modules/blog");
-const user = require("./app/modules/user");
-const comment = require("./app/modules/comment");
+const blog = require("./modules/blog");
+const user = require("./modules/user");
+const comment = require("./modules/comment");
+const { notFoundHandler, errorHandler } = require("./middlewares/errorHandlers");
 
 // Security Middleware Implementation
 app.use(cors());
@@ -16,6 +16,13 @@ app.use(cors());
 // Body Parser Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// welcome route
+app.get("/", (req, res) => {
+  res.send({
+    message: "Welcome to the Blog API",
+  });
+});
 
 // Routes Implementation
 app.use("/api/v1/user", user.Route);

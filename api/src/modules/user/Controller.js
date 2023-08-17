@@ -1,7 +1,7 @@
 const User = require("./Model");
 const jwt = require("jsonwebtoken");
 
-const { jwt_secret } = require("../../../config");
+const { jwt_secret } = require("../../config");
 const { hashPassword, comparePassword } = require("../../utility/auth");
 
 const register = async (req, res) => {
