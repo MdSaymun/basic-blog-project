@@ -7,8 +7,6 @@ import { BsSearch } from "react-icons/bs";
 
 const LazyBlog = React.lazy(() => import("../Blog/Blog.jsx"));
 
-axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("Authorization")}`;
-
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,7 +16,7 @@ const Blogs = () => {
     setLoading(true);
 
     try {
-      const res = await axios.get(keyword ? `blog/search?keyword=${keyword}` : "");
+      const res = await axios.get(keyword ? `blog/search?keyword=${keyword}` : "/blog");
       setBlogs(res?.data?.blogs);
     } catch (error) {
       console.error(error);
@@ -86,9 +84,7 @@ const Blogs = () => {
         <div className="row row-cols-1 row-cols-md-3 g-4">
           <Suspense fallback={<Loading />}>
             {blogs?.length > 0 ? (
-              blogs?.map((blog) => (
-                <LazyBlog key={blog._id} blog={blog} onDelete={handleDelete} />
-              ))
+              blogs?.map((blog) => <LazyBlog key={blog._id} blog={blog} onDelete={handleDelete} />)
             ) : (
               <p>No blogs found for the given keyword.</p>
             )}

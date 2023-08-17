@@ -3,12 +3,12 @@ import axios from "../../utils/axiosInstance.js";
 import { toast } from "react-toastify";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../AuthContext/AuthContext.js";
+import { AuthContext } from "../../Context/index.jsx";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // New state variable
-  const { isAdmin, setLoggedIn, setUsername } = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext);
   let navigate = useNavigate();
 
   const {
@@ -22,18 +22,12 @@ const Login = () => {
     try {
       const response = await axios.post("user/login", data);
 
-      if (response?.data?.user?.role === 1) {
-        isAdmin(true);
-      }
-
       if (response?.data?.error) {
         toast.error(response?.data?.error);
       }
       if (response?.data?.token) {
         toast.success("Welcome back");
-        localStorage.setItem("Authorization", response?.data?.token);
-        setLoggedIn(true);
-        setUsername(response?.data?.user?.username);
+        dispatch({ type: "LOGIN", payload: response.data });
         navigate("/");
       }
     } catch (error) {
@@ -48,10 +42,7 @@ const Login = () => {
       <h1 className="mb-5">Login</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3">
-          <label
-            htmlFor="exampleInputEmail1"
-            className="form-label fw-semibold"
-          >
+          <label htmlFor="exampleInputEmail1" className="form-label fw-semibold">
             Username
           </label>
           <input
@@ -60,15 +51,10 @@ const Login = () => {
             className="form-control"
             placeholder="Enter username"
           />
-          {errors.username && (
-            <span className="text-danger">This field is required</span>
-          )}
+          {errors.username && <span className="text-danger">This field is required</span>}
         </div>
         <div className="mb-3">
-          <label
-            htmlFor="exampleInputPassword1"
-            className="form-label fw-semibold"
-          >
+          <label htmlFor="exampleInputPassword1" className="form-label fw-semibold">
             Password
           </label>
           <div className="input-group">
@@ -86,16 +72,10 @@ const Login = () => {
               {showPassword ? "Hide" : "Show"}
             </button>
           </div>
-          {errors.password && (
-            <span className="text-danger">This field is required</span>
-          )}
+          {errors.password && <span className="text-danger">This field is required</span>}
         </div>
 
-        <button
-          type="submit"
-          className="btn btn-success px-5 fw-semibold rounded-pill"
-          disabled={loading}
-        >
+        <button type="submit" className="btn btn-primary px-5 fw-semibold rounded-pill" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>

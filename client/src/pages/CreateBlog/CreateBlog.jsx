@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import axios from "../../utils/axiosInstance.js";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
-axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("Authorization")}`;
+import { AuthContext } from "../../Context/index.jsx";
 
 const CreateBlog = () => {
+  const { state } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
 
@@ -20,7 +20,11 @@ const CreateBlog = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const response = await axios.post("blog/create", data);
+      const response = await axios.post("blog/create", data, {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
       toast.success("Blog created.", { autoClose: 5000 });
       console.log("Blog created.", response.data);
       navigate(`/post/${response.data.blog._id}`);
@@ -88,7 +92,7 @@ const CreateBlog = () => {
           {handleMaxLengthExceeded("content", 3000)}
           {errors.content && <span className="text-danger">This field is required</span>}
         </div>
-        <button type="submit" className="btn btn-success rounded-pill px-5 fw-semibold" disabled={loading}>
+        <button type="submit" className="btn btn-primary rounded-pill px-5 fw-semibold" disabled={loading}>
           {loading ? "Publishing..." : "Publish"}
         </button>
       </form>

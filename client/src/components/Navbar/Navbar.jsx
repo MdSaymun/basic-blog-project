@@ -2,14 +2,14 @@ import { Link } from "react-router-dom";
 import { IoCreateOutline } from "react-icons/io5";
 import { AiOutlineLogout } from "react-icons/ai";
 import { useContext } from "react";
-import { AuthContext } from "../../AuthContext/AuthContext";
+import { AuthContext } from "../../Context";
 
 const Navbar = () => {
-  const { loggedIn, isAdmin, username } = useContext(AuthContext);
+  const { dispatch, state } = useContext(AuthContext);
+  const { isLoggedIn, user } = state;
 
   const handleLogout = () => {
-    isAdmin(false);
-    loggedIn(false);
+    dispatch({ type: "LOGOUT" });
   };
 
   return (
@@ -32,44 +32,44 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto">
-            {loggedIn && (
+            {isLoggedIn ? (
               <li className="nav-item">
                 <Link to="/" className="nav-link active" aria-current="page">
                   Home
                 </Link>
               </li>
-            )}
-            {loggedIn && (
+            ) : null}
+            {isLoggedIn ? (
               <li className="nav-item">
                 <Link to="/create" className="nav-link d-flex gap-1">
                   <IoCreateOutline size={23} /> Write
                 </Link>
               </li>
-            )}
+            ) : null}
           </ul>
           <ul className="navbar-nav">
-            {!loggedIn && (
+            {!isLoggedIn && (
               <li className="nav-item">
                 <Link to="/login" className="nav-link ml-auto">
                   Login
                 </Link>
               </li>
             )}
-            {!loggedIn && (
+            {!isLoggedIn && (
               <li className="nav-item">
                 <Link to="/registration" className="nav-link ml-auto">
                   Registration
                 </Link>
               </li>
             )}
-            {loggedIn && (
+            {isLoggedIn && (
               <li className="nav-item mr-auto">
                 <Link to="/login" className="nav-link" onClick={handleLogout}>
                   <AiOutlineLogout /> Logout
                 </Link>
               </li>
             )}
-            {loggedIn && <li className="nav-link mr-auto">{username}</li>}
+            {isLoggedIn && <li className="nav-link mr-auto">{user?.username || ""}</li>}
           </ul>
         </div>
       </div>

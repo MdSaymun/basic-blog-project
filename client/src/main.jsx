@@ -6,10 +6,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AppProvider from "./Context/index.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <AppProvider>
+      <App />
+    </AppProvider>
     <ToastContainer />
   </React.StrictMode>
 );

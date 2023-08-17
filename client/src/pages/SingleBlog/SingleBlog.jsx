@@ -4,19 +4,18 @@ import { FaRegUserCircle } from "react-icons/fa";
 import Loading from "../../components/Loading/Loading.jsx";
 import axios from "../../utils/axiosInstance.js";
 import formatDate from "../../utils/formattedDate.js";
-import { AuthContext } from "../../AuthContext/AuthContext.js";
+import { AuthContext } from "../../Context/index.jsx";
 import Filter from "bad-words";
 import placeholder from "../../assets/placeholder.png";
 
-
-axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("Authorization")}`;
 const SingleBlog = () => {
   const { id } = useParams();
   const [blogAndComments, setBlogAndComments] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [commentText, setCommentText] = useState("");
-  const { username, admin } = useContext(AuthContext);
+  const { state } = useContext(AuthContext);
+  const { user, isAdmin } = state;
 
   useEffect(() => {
     const fetchBlogAndComments = async () => {
@@ -42,7 +41,7 @@ const SingleBlog = () => {
     try {
       const response = await axios.post(`comment/createCommentByPostId/${id}`, {
         text: commentText,
-        username,
+        username: user.username,
       });
 
       // Update the local state with the new comment
@@ -71,8 +70,6 @@ const SingleBlog = () => {
   const censoredTitle = filter.clean(blog?.title);
   const censoredContent = filter.clean(blog?.content);
   const censoredAuthor = filter.clean(blog?.author);
-
-  console.log("comment?.createdAt", comments);
 
   // Reverse the comments array to show the last added comment at the top
   const reversedComments = comments.slice().reverse();
@@ -104,7 +101,7 @@ const SingleBlog = () => {
             </p>
           )}
 
-          {admin && blog?.updatedAt && (
+          {isAdmin && blog?.updatedAt && (
             <p className="card-text">
               <small className="text-body-secondary">Updated at {formatDate(blog?.updatedAt)}</small>
             </p>

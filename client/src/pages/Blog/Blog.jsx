@@ -4,14 +4,15 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { IoCreateOutline } from "react-icons/io5";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../AuthContext/AuthContext";
+import { AuthContext } from "../../Context";
 import placeholder from "../../assets/placeholder.png";
 import Filter from "bad-words";
 
 const Blog = ({ blog, onDelete }) => {
   const { title, content, author, _id } = blog;
 
-  const { admin } = useContext(AuthContext);
+  const { state } = useContext(AuthContext);
+  const { isAdmin } = state;
 
   const filter = new Filter();
   const censoredTitle = filter.clean(title);
@@ -46,7 +47,7 @@ const Blog = ({ blog, onDelete }) => {
             </p>
           </Link>
 
-          {admin && (
+          {isAdmin && (
             <div className="d-flex gap-2">
               <Link to={`/edit/${_id}`} className="link">
                 <button className="d-flex align-items-center btn btn-secondary gap-1">

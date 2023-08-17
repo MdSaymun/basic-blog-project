@@ -1,12 +1,11 @@
 import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { AuthContext } from "./AuthContext/AuthContext";
+import { AuthContext } from "./Context";
 
 const useAuth = () => {
-  const { loggedIn } = useContext(AuthContext);
+  const { state } = useContext(AuthContext);
 
-  const user = { loggedIn };
-  return user?.loggedIn;
+  return state?.isLoggedIn;
 };
 
 const ProtectedRoutes = () => {
