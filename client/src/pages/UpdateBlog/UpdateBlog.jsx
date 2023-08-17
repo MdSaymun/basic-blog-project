@@ -2,10 +2,9 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "../../utils/axiosInstance.js";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading/Loading.jsx";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("Authorization")}`;
 
@@ -26,7 +25,7 @@ const UpdateBlog = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await axios.get(`/post/${id}`);
+        const response = await axios.get(`blog/post/${id}`);
         const { title, author, content } = response.data.blog;
         setValue("title", title);
         setValue("author", author);
@@ -46,7 +45,7 @@ const UpdateBlog = () => {
       setUpdating(true);
       toast.info("Updating blog..."); // Show loading toast
 
-      await axios.put(`/edit/${id}`, data);
+      await axios.put(`blog/edit/${id}`, data);
       toast.dismiss();
       toast.success("Blog updated successfully", { autoClose: 3000 });
     } catch (error) {
