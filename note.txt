@@ -1,7 +1,8 @@
-Frontend URL: https://basic-blog-project.vercel.app
-API URL: https://blog-project-api.vercel.app
+Frontend Live URL: https://basic-blog-project.vercel.app
+API Live URL: https://blog-project-api.vercel.app
 
-Github Repo: https://github.com/MdSaymun/basic-blog-project
+Server Side Github Repo: https://github.com/MdSaymun/basic-blog-project
+Client Side Github Repo: https://github.com/MdSaymun/blog-project-api
 
 
 Admin Credential:
