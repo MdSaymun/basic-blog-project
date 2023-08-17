@@ -1,4 +1,4 @@
-Frontend Live URL: https://basic-blog-project.vercel.app
+Frontend Live URL: https://blog-project-front.vercel.app
 API Live URL: https://blog-project-api.vercel.app
 
 Server Side Github Repo: https://github.com/MdSaymun/basic-blog-project
