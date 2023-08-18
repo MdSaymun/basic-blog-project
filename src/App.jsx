@@ -14,17 +14,16 @@ const UpdateBlog = lazy(() => import("./pages/UpdateBlog/UpdateBlog"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage/NotFoundPage"));
 
 function App() {
-
   return (
     <BrowserRouter>
       <Suspense fallback={<Loading />}>
         <Navbar />
         <Routes>
+          <Route path="/" element={<Blogs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration />} />
+          <Route path="/post/:id" element={<SingleBlog />} />
           <Route element={<ProtectedRoutes />}>
-            <Route path="/" element={<Blogs />} />
-            <Route path="/post/:id" element={<SingleBlog />} />
             <Route path="/create" element={<CreateBlog />} />
             <Route path="/edit/:id" element={<UpdateBlog />} />
           </Route>

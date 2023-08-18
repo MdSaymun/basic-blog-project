@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import Loading from "../../components/Loading/Loading.jsx";
 import axios from "../../utils/axiosInstance.js";
@@ -7,15 +7,17 @@ import formatDate from "../../utils/formattedDate.js";
 import { AuthContext } from "../../Context/index.jsx";
 import Filter from "bad-words";
 import placeholder from "../../assets/placeholder.png";
+import { toast } from "react-toastify";
 
 const SingleBlog = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [blogAndComments, setBlogAndComments] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [commentText, setCommentText] = useState("");
   const { state } = useContext(AuthContext);
-  const { user, isAdmin } = state;
+  const { user, isAdmin, isLoggedIn } = state;
 
   useEffect(() => {
     const fetchBlogAndComments = async () => {
@@ -39,6 +41,11 @@ const SingleBlog = () => {
 
   const handleAddComment = async () => {
     try {
+      if (!isLoggedIn) {
+        toast.warning("You need to login to add a comment!");
+        return navigate("/login");
+      }
+
       const response = await axios.post(`comment/createCommentByPostId/${id}`, {
         text: commentText,
         username: user.username,
